@@ -14,4 +14,16 @@ class User {
     required this.public_repo,
     required this.username,
   });
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      username: json['login'],
+      followers: json['followers'],
+      following: json['following'],
+      imageUrl: json['avatar_url'],
+      joined_date: json['created_at'],
+      public_repo: json['public_repos'],
+
+      // Map other fields from the JSON data
+    );
+  }
 }

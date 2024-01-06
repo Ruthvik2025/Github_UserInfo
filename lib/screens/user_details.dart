@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:github/model/user.dart';
 import 'package:github/provider/user_provider.dart';
+import 'package:github/screens/followers_list.dart';
+import 'package:github/screens/following_list.dart';
 import 'package:provider/provider.dart';
 
 class UserDetails extends StatefulWidget {
@@ -17,11 +19,11 @@ class _UserDetailsState extends State<UserDetails> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     if (_init) {
       setState(() {
         _isLoading = true;
       });
+
       Provider.of<UserProvider>(context)
           .getUserProfile(widget.userName)
           .then((_) {
@@ -35,13 +37,17 @@ class _UserDetailsState extends State<UserDetails> {
 
   @override
   Widget build(BuildContext context) {
-    // double screenSize = MediaQuery.of(context).size.height;
     final userProvider = Provider.of<UserProvider>(context);
     final user = userProvider.user;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text(widget.userName),
+        backgroundColor: Colors.black,
+        title: Text(
+          user?.username ?? "User Details",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: _isLoading
           ? Center(
@@ -64,48 +70,59 @@ class UserDetailsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Row(
         children: [
-          // Container(
-          //   width: double.infinity,
-          //   height: MediaQuery.of(context).size.height,
-          //   // height: double.infinity,
-          //   decoration: BoxDecoration(
-          //     color: Colors.black,
-          //   ),
-          // ),
           CircleAvatar(
-            maxRadius: 75,
+            maxRadius: 40,
             backgroundImage: NetworkImage(
               user.imageUrl ?? "",
             ),
           ),
-          Row(
+          SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Followers ${user.followers.toString()}",
-                style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => FollowersList(
+                        username: user.username ?? "",
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Followers ${user.followers ?? 0}",
+                  style: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-              SizedBox(
-                width: 40,
-              ),
-              Text(
-                "Following ${user.following.toString()}",
-                style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
+              SizedBox(height: 10),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => FollowingList(
+                        username: user.username ?? "",
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Following ${user.following ?? 0}",
+                  style: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
-          SizedBox(
-            height: 14,
-          ),
-          Text("Joined at ${user.joined_date.toString()}"),
+          SizedBox(height: 14),
+          Text("Joined at ${user.joined_date ?? ""}"),
         ],
       ),
     );

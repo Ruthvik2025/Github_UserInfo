@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class UserProvider with ChangeNotifier {
   User? user;
+  // int ?followers;
   var client = http.Client();
 
   Future<void> getUserProfile(String username) async {
@@ -36,6 +37,42 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("Error fetching user profile: $e");
+    }
+  }
+
+  List<dynamic> followersList = [];
+  Future<void> getFollowersList(String username) async {
+    final url = Uri.parse('${Api.api}/users/$username/followers');
+
+    try {
+      final response = await client.get(
+        url,
+        headers: {'Authorization': 'token ${Api.token}'},
+      );
+
+      final List<dynamic> responseData = json.decode(response.body);
+      followersList = responseData.map((data) => User.fromJson(data)).toList();
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching followers list: $e");
+    }
+  }
+
+  List<dynamic> followingList = [];
+  Future<void> getFollowingList(String username) async {
+    final url = Uri.parse('${Api.api}/users/$username/following');
+
+    try {
+      final response = await client.get(
+        url,
+        headers: {'Authorization': 'token ${Api.token}'},
+      );
+
+      final List<dynamic> responseData = json.decode(response.body);
+      followingList = responseData.map((data) => User.fromJson(data)).toList();
+      notifyListeners();
+    } catch (e) {
+      print("Error fetching followers list: $e");
     }
   }
 }

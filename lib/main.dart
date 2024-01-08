@@ -16,6 +16,18 @@ class MyApp extends StatelessWidget {
       value: UserProvider(),
       child: MaterialApp(
         title: "github API",
+        theme: ThemeData(
+          primaryColor: Colors.blue,
+          // accentColor: Colors.blueAccent,
+          textTheme: TextTheme(
+            caption: TextStyle(
+              fontSize: 14.0,
+              height: 1.5,
+              color: Colors.white10,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
         home: HomePage(),
       ),
     );

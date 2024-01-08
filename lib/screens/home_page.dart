@@ -17,9 +17,10 @@ class _HomePageState extends State<HomePage> {
       return;
     }
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => UserDetails(
-              userName: _usernameController.text,
-            ))); //if it's not worked use _username.text
+        builder: (context) => UserDetails(userName: _usernameController.text)));
+    //UserDetails(
+    // userName: _usernameController.text,
+    // )//if it's not worked use _username.text
   }
 
   @override

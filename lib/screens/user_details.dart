@@ -43,6 +43,7 @@ class _UserDetailsState extends State<UserDetails> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.black,
         title: Text(
           user?.username ?? "User Details",
@@ -72,14 +73,35 @@ class UserDetailsContent extends StatelessWidget {
     return SingleChildScrollView(
       child: Row(
         children: [
-          CircleAvatar(
-            maxRadius: 40,
-            backgroundImage: NetworkImage(
-              user.imageUrl ?? "",
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  maxRadius: 55,
+                  backgroundImage: NetworkImage(
+                    user.imageUrl ?? "",
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  user.username.toString(),
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                Text(
+                  "Joined at ${user.joined_date ?? ""}",
+                  style: TextStyle(
+                      color: Colors.white38,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
           SizedBox(width: 10),
-          Column(
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
@@ -92,15 +114,23 @@ class UserDetailsContent extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(
-                  "Followers ${user.followers ?? 0}",
-                  style: const TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                child: Column(
+                  children: [
+                    Text(
+                      user.followers.toString(),
+                      style: const TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Following ",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    )
+                  ],
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(width: 10),
               InkWell(
                 onTap: () {
                   Navigator.of(context).push(
@@ -111,18 +141,25 @@ class UserDetailsContent extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(
-                  "Following ${user.following ?? 0}",
-                  style: const TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                child: Column(
+                  children: [
+                    Text(
+                      user.following.toString(),
+                      style: const TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Following ",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          SizedBox(height: 14),
-          Text("Joined at ${user.joined_date ?? ""}"),
+          // SizedBox(height: 14),
         ],
       ),
     );

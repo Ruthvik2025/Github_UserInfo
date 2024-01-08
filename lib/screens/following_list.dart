@@ -23,7 +23,7 @@ class FollowingList extends StatelessWidget {
 
           if (followingList.isEmpty) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: Text("No Following"),
             );
           } else {
             return ListView.builder(
